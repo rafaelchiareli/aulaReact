@@ -1,14 +1,13 @@
-import React,{useState, useEffect} from "react";
-import { GetClientes } from "./services/serviceCliente";
+import React from "react";
 
-const App = () =>{
-  useEffect(() => {
-GetClientes().then(res => {console.log(res.data)})
-  },[])
-  
+import Cliente from "./components/pages/cliente/cliente";
+
+
+const App = () => {
+ 
   return (
     <>
-    <h2>Olá Mundo!</h2>
+      <Cliente></Cliente>
     </>
   )
 }

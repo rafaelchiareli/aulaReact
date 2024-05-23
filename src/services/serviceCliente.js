@@ -7,3 +7,7 @@ export async function GetClientes() {
 export async function GetClienteById(id){
     return await Api.get(`/cliente/getclientesbyid/${id}`);
 }
+
+export async function PostCliente(cliente){
+    return await Api.post("/cliente/postcliente", cliente);
+}
