@@ -7,6 +7,14 @@ const Table = ({ dados = [], columns = [], className = 'table table-stripped' })
             case ("texto"):
                 return value.name;
                 break;
+            case ("botao"):
+                var botoes = []
+                value.botoes.map(item => {
+                    botoes.unshift(item.botao)
+                });
+                return botoes;
+                break;
+
         }
     }
 
@@ -23,19 +31,14 @@ const Table = ({ dados = [], columns = [], className = 'table table-stripped' })
 
                 </thead>
                 <tbody>
-                    {/* { dados && dados?.map(cliente => {
-                            // console.log('item',cliente);
-                            return(
-                                <tr key={cliente.cliNome}>
-                                    <td key={"col_"+cliente.cliNome}>
-                                        {cliente.cliNome}
-                                    </td>
-                                    <td key={"col_"+cliente.cliCpfcnpj}>
-                                        {cliente.cliCpfcnpj}
-                                    </td>
-                                </tr>
-                            )
-                        })} */}
+                    {dados.map((dado, index) =>
+                        <tr key={`linha-${index}`}>
+                            {columns.map((col, index) => <td>
+                                {dado[index] == null ? "" : CriarColunas(col.columnType, dado[index])}
+                            </td>)}
+                        </tr>
+                    )}
+
                 </tbody>
 
 

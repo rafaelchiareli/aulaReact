@@ -11,3 +11,6 @@ export async function GetClienteById(id){
 export async function PostCliente(cliente){
     return await Api.post("/cliente/postcliente", cliente);
 }
+export async function PutCliente(cliente){
+    return await Api.put("/cliente/putcliente", cliente);
+}

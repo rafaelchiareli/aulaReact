@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { GetClientes, PostCliente } from "../../../services/serviceCliente";
+import { GetClientes, PostCliente, PutCliente } from "../../../services/serviceCliente";
 import '../cliente/cliente.css';
 import Table from "../../commons/table/table";
 
 
-const Cliente = () => {
 
+const Cliente = () => {
+    const [alterar, setAlterar] = useState(false);
+    const [textoBotao, setTextoBotao] = useState("Salvar");
     const [listaClientes, setListaClientes] = useState([]);
     const [cliente, setCliente] = useState({});
+    const [salvou, setSalvou] = useState(false);
 
     const columns = [
         {name: 'Nome', columnType: 'texto'},
@@ -15,7 +18,8 @@ const Cliente = () => {
         {name: 'Telefone', columnType: 'texto'},
         {name: 'Email', columnType: 'texto'},
         {name: 'Nome da Mae', columnType: 'texto'},
-        {name: 'Sexo', columnType: 'texto'}
+        {name: 'Sexo', columnType: 'texto'},
+        {name: 'Ação', columnType: 'botao'}
     ]
 
     const dataSource = listaClientes && listaClientes?.map(item => [
@@ -25,6 +29,11 @@ const Cliente = () => {
         {name: item.cliEmail},
         {name: item.cliNomeMae},
         {name: item.cliSexo},
+        {
+            botoes: [{
+                botao: <button onClick={() => CarregarCliente(item)} className="btn btn-sm btn-primary"type="button">Editar</button>
+            }]
+        }
 
     ])
     const handleChange = (event,value) =>{
@@ -33,14 +42,34 @@ const Cliente = () => {
         
     }
     const handleSalvar = () =>{
-        console.log("cliente",cliente);
-        PostCliente(cliente).then(res => {console.log(res.data)});
+        if (alterar){
+            PutCliente(cliente).then(res =>setSalvou(true));
+        }
+        else{
+            PostCliente(cliente).then(res => setSalvou(true));
+        }
+      
+    }
+
+    const CarregarCliente = (cliente)  =>{
+        setCliente(cliente);
+        setAlterar(true);
     }
 
     useEffect(() => {
         GetClientes().then(res => setListaClientes(res.data));
-
-    }, [])
+        setSalvou(false);
+    }, [salvou])
+    useEffect(() => {
+        setTextoBotao(!alterar ? "Salvar" : "Alterar")
+    //    if (alterar) {
+    //         setTextoBotao("Alterar");
+    //    }
+    //    else{
+    //     setTextoBotao("Salvar");
+    //    }  
+    
+    },[alterar])
     return (
         <div style={{marginLeft: "10px"}}>
             <div>
@@ -93,12 +122,12 @@ const Cliente = () => {
                         </div>
                     </div>
                 </div>
-                <button onClick={handleSalvar} type="button" className="btn btn-success">Salvar</button>
+                <button onClick={handleSalvar} type="button" className="btn btn-success">{textoBotao}</button>
             </div>
 
             <div>
               
-                <Table dados={listaClientes} columns={columns}></Table>
+                <Table dados={dataSource} columns={columns}></Table>
 
             </div>
         </div>
