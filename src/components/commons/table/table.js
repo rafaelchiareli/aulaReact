@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Table = ({ dados = [], columns = [], className = 'table table-stripped' }) => {
-
+console.log(dados)
     const CriarColunas = (columnType, value) => {
         switch (columnType) {
             case ("texto"):

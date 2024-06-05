@@ -1,13 +1,13 @@
 import React from "react";
+import Home from "./components/pages/home/home";
 
-import Cliente from "./components/pages/cliente/cliente";
-
+import NavbarMain from "./components/commons/table/navbar/navbar";
 
 const App = () => {
- 
+
   return (
     <>
-      <Cliente></Cliente>
+    <Home></Home>
     </>
   )
 }

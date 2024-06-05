@@ -14,3 +14,7 @@ export async function PostCliente(cliente){
 export async function PutCliente(cliente){
     return await Api.put("/cliente/putcliente", cliente);
 }
+
+export async function DeleteCliente(id){
+    return await Api.delete(`/cliente/deletecliente/${id}`);
+}

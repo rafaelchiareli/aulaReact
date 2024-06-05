@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetClientes, PostCliente, PutCliente } from "../../../services/serviceCliente";
+import { DeleteCliente, GetClientes, PostCliente, PutCliente } from "../../../services/serviceCliente";
 import '../cliente/cliente.css';
 import Table from "../../commons/table/table";
 
@@ -11,6 +11,7 @@ const Cliente = () => {
     const [listaClientes, setListaClientes] = useState([]);
     const [cliente, setCliente] = useState({});
     const [salvou, setSalvou] = useState(false);
+    const [habilitar, setHabilitar] = useState(true);
 
     const columns = [
         {name: 'Nome', columnType: 'texto'},
@@ -31,8 +32,13 @@ const Cliente = () => {
         {name: item.cliSexo},
         {
             botoes: [{
-                botao: <button onClick={() => CarregarCliente(item)} className="btn btn-sm btn-primary"type="button">Editar</button>
-            }]
+                botao: <button onClick={() => CarregarCliente(item)} style={{marginLeft:"5px"}} className="btn btn-sm btn-primary"type="button">Editar</button>
+            },
+            {
+                botao: <button onClick={() => ExcluirCliente(item.cliCodigo)} className="btn btn-sm btn-danger"type="button">Excluir</button>
+            },
+        
+        ]
         }
 
     ])
@@ -44,30 +50,34 @@ const Cliente = () => {
     const handleSalvar = () =>{
         if (alterar){
             PutCliente(cliente).then(res =>setSalvou(true));
+            setCliente({});
         }
         else{
             PostCliente(cliente).then(res => setSalvou(true));
+            setCliente({});
         }
       
     }
 
+    const NovoCliente = () =>{
+        setCliente({});
+        setHabilitar(false);
+    }
     const CarregarCliente = (cliente)  =>{
         setCliente(cliente);
         setAlterar(true);
     }
 
+    const ExcluirCliente = (id) => {
+        DeleteCliente(id).then(res => {console.log(res.data)});
+        setSalvou(true);
+    }
     useEffect(() => {
         GetClientes().then(res => setListaClientes(res.data));
-        setSalvou(false);
+       
     }, [salvou])
     useEffect(() => {
-        setTextoBotao(!alterar ? "Salvar" : "Alterar")
-    //    if (alterar) {
-    //         setTextoBotao("Alterar");
-    //    }
-    //    else{
-    //     setTextoBotao("Salvar");
-    //    }  
+        setTextoBotao(!alterar ? "Salvar" : "Alterar") 
     
     },[alterar])
     return (
@@ -80,19 +90,19 @@ const Cliente = () => {
                     <div style={{padding: "10px"}} className="col-md">
                         <div>
                             <label>Nome</label>
-                            <input type="text" id="cliNome" value={cliente.cliNome || ""} onChange={(e) => handleChange(e, e.target.value)} className="form-control"></input>
+                                <input readOnly={habilitar} type="text" id="cliNome" value={cliente.cliNome || ""} onChange={(e) => handleChange(e, e.target.value)} className="form-control"></input>
                         </div>
                     </div>
                     <div style={{padding: "10px"}} className="col-md">
                         <div >
                             <label>CPF/CNPJ</label>
-                            <input type="text" id="cliCpfcnpj"value={cliente.cliCpfcnpj || ""} onChange={(e) => handleChange(e, e.target.value)} className="form-control"></input>
+                            <input  readOnly={habilitar}  type="text" id="cliCpfcnpj"value={cliente.cliCpfcnpj || ""} onChange={(e) => handleChange(e, e.target.value)} className="form-control"></input>
                         </div>
                     </div>
                     <div style={{padding: "10px"}} className="col-md">
                         <div >
                             <label>Nome da Mae</label>
-                            <input type="text" id="cliNomeMae" value={cliente.cliNomeMae || ""} onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
+                            <input  readOnly={habilitar}  type="text" id="cliNomeMae" value={cliente.cliNomeMae || ""} onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
                         </div>
                     </div>
                 </div>
@@ -100,29 +110,30 @@ const Cliente = () => {
                     <div style={{padding: "10px"}} className="col-md">
                         <div>
                             <label>Data de Nascimento</label>
-                            <input type="date" id="cliDataNascimento" defaultValue={cliente.cliDataNascimento } onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
+                            <input  readOnly={habilitar}  type="date" id="cliDataNascimento" defaultValue={cliente.cliDataNascimento } onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
                         </div>
                     </div>
                     <div style={{padding: "10px"}} className="col-md">
                         <div >
                             <label>Email</label>
-                            <input type="email" id="cliEmail"value={cliente.cliEmail || "" } onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
+                            <input   readOnly={habilitar} type="email" id="cliEmail"value={cliente.cliEmail || "" } onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
                         </div>
                     </div>
                     <div style={{padding: "10px"}} className="col-md">
                         <div >
                             <label>Telefone</label>
-                            <input type="text" id="cliTelefone"value={cliente.cliTelefone || "" } onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
+                            <input  readOnly={habilitar}  type="text" id="cliTelefone"value={cliente.cliTelefone || "" } onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
                         </div>
                     </div>
                     <div style={{padding: "10px"}} className="col-md-1">
                         <div >
                             <label>Sexo</label>
-                            <input type="text" id="cliSexo" value={cliente.cliSexo || "" }onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
+                            <input readOnly={habilitar}  type="text" id="cliSexo" value={cliente.cliSexo || "" }onChange={(e) => handleChange(e, e.target.value)}className="form-control"></input>
                         </div>
                     </div>
                 </div>
                 <button onClick={handleSalvar} type="button" className="btn btn-success">{textoBotao}</button>
+                <button onClick={NovoCliente} type="button" className="btn btn-primary">Novo Cliente</button>
             </div>
 
             <div>
