@@ -1,4 +1,5 @@
 import React from 'react'
+import { useAppState } from '../../../context/storeContextProvider';
 
 const Table = ({ dados = [], columns = [], className = 'table table-stripped' }) => {
 console.log(dados)
@@ -17,10 +18,11 @@ console.log(dados)
 
         }
     }
-
+    const {...state } = useAppState();
 
     return (
         <>
+        <input type="text" value={state.nome}></input>
             <table className={className} id="tabela">
                 <thead>
                     <tr>

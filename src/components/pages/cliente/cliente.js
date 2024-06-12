@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DeleteCliente, GetClientes, PostCliente, PutCliente } from "../../../services/serviceCliente";
 import '../cliente/cliente.css';
 import Table from "../../commons/table/table";
+import { useAppState } from "../../../context/storeContextProvider";
 
 
 
@@ -12,6 +13,7 @@ const Cliente = () => {
     const [cliente, setCliente] = useState({});
     const [salvou, setSalvou] = useState(false);
     const [habilitar, setHabilitar] = useState(true);
+    const {...state} = useAppState();
 
     const columns = [
         {name: 'Nome', columnType: 'texto'},
@@ -59,6 +61,9 @@ const Cliente = () => {
       
     }
 
+    const mudarState = () =>{
+        state.setNome("João")
+    }
     const NovoCliente = () =>{
         setCliente({});
         setHabilitar(false);
@@ -141,7 +146,12 @@ const Cliente = () => {
                 <Table dados={dataSource} columns={columns}></Table>
 
             </div>
+            <br />
+            
+            <button type="button" onClick={mudarState}>Mudar State</button>
         </div>
+
+    
 
     );
 }

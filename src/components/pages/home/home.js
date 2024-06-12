@@ -1,11 +1,12 @@
 import React from 'react'
 import NavbarMain from '../../commons/table/navbar/navbar';
 
-const Home = () =>{
+
+const Home = () => {
 
     return (
         <>
-       <NavbarMain></NavbarMain>
+            <NavbarMain></NavbarMain>
         </>
     )
 }
