@@ -18,3 +18,7 @@ export async function PutCliente(cliente){
 export async function DeleteCliente(id){
     return await Api.delete(`/cliente/deletecliente/${id}`);
 }
+
+export async function ListarTipos(){
+    return await Api.get('/Cliente/GetTipos');
+}
